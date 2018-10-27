@@ -13,19 +13,21 @@ import {
   MatListModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule, MatInputModule, MatSelectModule, MatRadioModule, MatCardModule
+  MatSortModule, MatInputModule, MatSelectModule, MatRadioModule, MatCardModule, MatGridListModule, MatMenuModule
 } from '@angular/material';
 import { QwestListComponent } from './qwest-list/qwest-list.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { QwestCreateComponent } from './qwest-create/qwest-create.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     QwestListComponent,
-    QwestCreateComponent
+    QwestCreateComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
