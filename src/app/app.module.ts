@@ -13,16 +13,19 @@ import {
   MatListModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule, MatInputModule, MatSelectModule, MatRadioModule, MatCardModule
 } from '@angular/material';
 import { QwestListComponent } from './qwest-list/qwest-list.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { QwestCreateComponent } from './qwest-create/qwest-create.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    QwestListComponent
+    QwestListComponent,
+    QwestCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,12 @@ import { AppRoutingModule } from './/app-routing.module';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

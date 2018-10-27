@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes }  from '@angular/router';
 import { QwestListComponent } from './qwest-list/qwest-list.component';
+import { QwestCreateComponent } from './qwest-create/qwest-create.component';
 
 const appRoutes: Routes = [
-  { path: 'qwest-list', component: QwestListComponent }
+  { path: 'qwest-list', component: QwestListComponent },
+  { path: 'qwest-create', component: QwestCreateComponent }
 ];
  
 @NgModule({
