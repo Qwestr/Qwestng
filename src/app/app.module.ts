@@ -16,6 +16,7 @@ import {
   MatSortModule
 } from '@angular/material';
 import { QwestListComponent } from './qwest-list/qwest-list.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { QwestListComponent } from './qwest-list/qwest-list.component';
     MatListModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
