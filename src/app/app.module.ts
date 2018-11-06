@@ -1,25 +1,32 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationComponent } from './navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import {
-  MatToolbarModule,
-  MatButtonModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatListModule,
-  MatTableModule,
-  MatPaginatorModule,
-  MatSortModule, MatInputModule, MatSelectModule, MatRadioModule, MatCardModule, MatGridListModule, MatMenuModule
-} from '@angular/material';
-import { QwestListComponent } from './qwest-list/qwest-list.component';
-import { AppRoutingModule } from './/app-routing.module';
-import { QwestCreateComponent } from './qwest-create/qwest-create.component';
+import { NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSortModule,
+  MatTableModule,
+  MatToolbarModule
+} from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './/app-routing.module';
+import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { QwestCreateComponent } from './qwest-create/qwest-create.component';
+import { QwestListComponent } from './qwest-list/qwest-list.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +37,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     DashboardComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
     BrowserAnimationsModule,
     LayoutModule,
@@ -41,14 +49,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    AppRoutingModule,
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
     ReactiveFormsModule,
     MatGridListModule,
-    MatMenuModule
+    MatMenuModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
