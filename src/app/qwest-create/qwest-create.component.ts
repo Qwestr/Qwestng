@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AppService } from '../app.service';
 
 @Component({
@@ -12,10 +13,12 @@ export class QwestCreateComponent {
     name: [null, Validators.required]
   });
 
-  constructor(private appService: AppService, private fb: FormBuilder) {}
+  constructor(private appService: AppService, private fb: FormBuilder, private router: Router) {}
 
   onSubmit() {
     // Create the Qwest
     this.appService.addQwest(this.form.value);
+    // Navigate to the Qwest List
+    this.router.navigateByUrl('/qwest-list');
   }
 }
