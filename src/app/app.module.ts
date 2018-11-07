@@ -1,6 +1,7 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   MatButtonModule,
@@ -38,6 +39,7 @@ import { QwestListComponent } from './qwest-list/qwest-list.component';
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     BrowserModule,
     BrowserAnimationsModule,
     LayoutModule,
