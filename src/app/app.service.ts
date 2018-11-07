@@ -21,7 +21,7 @@ export class AppService {
   }
 
   addQwest(qwest) {
-    //Add the new qwest to the collection
+    // Add the new qwest to the collection
     this.qwests.add(qwest);
   }
 
