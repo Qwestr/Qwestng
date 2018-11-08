@@ -2,6 +2,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
+import { AppService } from '../app.service';
+import { Qwest } from '../app.model';
 
 // TODO: Replace this with your own data model type
 export interface QwestListItem {
@@ -38,10 +40,10 @@ const EXAMPLE_DATA: QwestListItem[] = [
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class QwestListDataSource extends DataSource<QwestListItem> {
+export class QwestListDataSource extends DataSource<Qwest> {
   data: QwestListItem[] = EXAMPLE_DATA;
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(private appService: AppService, private paginator: MatPaginator, private sort: MatSort) {
     super();
   }
 
@@ -50,21 +52,24 @@ export class QwestListDataSource extends DataSource<QwestListItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<QwestListItem[]> {
+  connect(): Observable<Qwest[]> {
+    return this.appService.getQwests();
+    // console.log('qwests', this.appService.getQwests());
+    // console.log('qwests', this.appService.qwests);
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
-    const dataMutations = [
-      observableOf(this.data),
-      this.paginator.page,
-      this.sort.sortChange
-    ];
+    // const dataMutations = [
+    //   observableOf(this.data),
+    //   this.paginator.page,
+    //   this.sort.sortChange
+    // ];
 
-    // Set the paginator's length
-    this.paginator.length = this.data.length;
+    // // Set the paginator's length
+    // this.paginator.length = this.data.length;
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
-    }));
+    // return merge(...dataMutations).pipe(map(() => {
+    //   return this.getPagedData(this.getSortedData([...this.data]));
+    // }));
   }
 
   /**

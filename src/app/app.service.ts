@@ -12,12 +12,15 @@ import { Qwest } from './app.model';
 })
 export class AppService {
   qwests: AngularFirestoreCollection<Qwest>;
-
   private qwestDoc: AngularFirestoreDocument<Qwest>;
 
   constructor(private db: AngularFirestore) {
     // Get the qwests collection
     this.qwests = db.collection<Qwest>(config.collection_endpoint);
+  }
+
+  getQwests() {
+    return this.qwests.valueChanges();
   }
 
   addQwest(qwest) {
