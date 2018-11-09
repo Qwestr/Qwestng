@@ -4,6 +4,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection
 } from '@angular/fire/firestore';
+import { map } from 'rxjs/operators';
 import { config } from './app.config';
 import { Qwest } from './app.model';
 
@@ -20,7 +21,14 @@ export class AppService {
   }
 
   getQwests() {
-    return this.qwests.valueChanges();
+    // return this.qwests.valueChanges();
+    return this.qwests.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Qwest;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
   }
 
   addQwest(qwest) {

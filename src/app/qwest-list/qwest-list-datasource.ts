@@ -5,34 +5,10 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 import { AppService } from '../app.service';
 import { Qwest } from '../app.model';
 
-// TODO: Replace this with your own data model type
-export interface QwestListItem {
-  name: string;
-  id: number;
-}
-
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: QwestListItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
+const EXAMPLE_DATA: Qwest[] = [
+  {id: '1', name: 'Do A Thing'},
+  {id: '2', name: 'Do Another Thing'}
 ];
 
 /**
@@ -41,7 +17,7 @@ const EXAMPLE_DATA: QwestListItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class QwestListDataSource extends DataSource<Qwest> {
-  data: QwestListItem[] = EXAMPLE_DATA;
+  data: Qwest[] = EXAMPLE_DATA;
 
   constructor(private appService: AppService, private paginator: MatPaginator, private sort: MatSort) {
     super();
@@ -53,23 +29,28 @@ export class QwestListDataSource extends DataSource<Qwest> {
    * @returns A stream of the items to be rendered.
    */
   connect(): Observable<Qwest[]> {
-    return this.appService.getQwests();
-    // console.log('qwests', this.appService.getQwests());
+    // return this.appService.getQwests();
+    console.log('qwests', this.appService.getQwests());
     // console.log('qwests', this.appService.qwests);
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
-    // const dataMutations = [
-    //   observableOf(this.data),
-    //   this.paginator.page,
-    //   this.sort.sortChange
-    // ];
+    const dataMutations = [
+      observableOf(this.data),
+      this.paginator.page,
+      this.sort.sortChange
+    ];
 
-    // // Set the paginator's length
-    // this.paginator.length = this.data.length;
+    // Set the paginator's length
+    this.paginator.length = this.data.length;
 
-    // return merge(...dataMutations).pipe(map(() => {
-    //   return this.getPagedData(this.getSortedData([...this.data]));
-    // }));
+    return merge(...dataMutations).pipe(map((value: any) => {
+      console.log('value', value);
+      console.log('typeof value', typeof value);
+      // if (value instanceof <Qwest[]>) {
+
+      // }
+      return this.getPagedData(this.getSortedData([...this.data]));
+    }));
   }
 
   /**
@@ -82,7 +63,7 @@ export class QwestListDataSource extends DataSource<Qwest> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: QwestListItem[]) {
+  private getPagedData(data: Qwest[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
   }
@@ -91,7 +72,7 @@ export class QwestListDataSource extends DataSource<Qwest> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: QwestListItem[]) {
+  private getSortedData(data: Qwest[]) {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
