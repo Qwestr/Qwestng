@@ -5,19 +5,13 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 import { AppService } from '../app.service';
 import { Qwest } from '../app.model';
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: Qwest[] = [
-  {id: '1', name: 'Do A Thing'},
-  {id: '2', name: 'Do Another Thing'}
-];
-
 /**
  * Data source for the QwestList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
 export class QwestListDataSource extends DataSource<Qwest> {
-  data: Qwest[] = EXAMPLE_DATA;
+  data: Qwest[] = [];
 
   constructor(private appService: AppService, private paginator: MatPaginator, private sort: MatSort) {
     super();
@@ -29,26 +23,27 @@ export class QwestListDataSource extends DataSource<Qwest> {
    * @returns A stream of the items to be rendered.
    */
   connect(): Observable<Qwest[]> {
-    // return this.appService.getQwests();
-    console.log('qwests', this.appService.getQwests());
-    // console.log('qwests', this.appService.qwests);
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
-      this.paginator.page,
-      this.sort.sortChange
+      this.appService.getQwests().pipe(map((value) => {
+        return { type: 'DATA_CHANGE', data: value }
+      })),
+      this.paginator.page.pipe(map((value) => {
+        return { type: 'PAGE_CHANGE', data: value }
+      })),
+      this.sort.sortChange.pipe(map((value) => {
+        return { type: 'SORT_CHANGE', data: value }
+      }))
     ];
 
-    // Set the paginator's length
-    this.paginator.length = this.data.length;
-
-    return merge(...dataMutations).pipe(map((value: any) => {
-      console.log('value', value);
-      console.log('typeof value', typeof value);
-      // if (value instanceof <Qwest[]>) {
-
-      // }
+    return merge(...dataMutations).pipe(map((value: {type, data}) => {
+      if (value.type === 'DATA_CHANGE') {
+        // Set data
+        this.data = value.data
+        // Set the paginator's length
+        this.paginator.length = this.data.length;
+      }
       return this.getPagedData(this.getSortedData([...this.data]));
     }));
   }
