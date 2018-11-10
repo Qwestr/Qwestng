@@ -1,9 +1,9 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
+import { Observable, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
-import { AppService } from '../app.service';
 import { Qwest } from '../app.model';
+import { AppService } from '../app.service';
 
 /**
  * Data source for the QwestList view. This class should

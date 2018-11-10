@@ -14,7 +14,7 @@ export class QwestListComponent implements OnInit {
   dataSource: QwestListDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['id', 'name', 'actions'];
 
   constructor(private appService: AppService) { }
 
