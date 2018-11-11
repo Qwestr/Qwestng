@@ -28,6 +28,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { QwestCreateComponent } from './qwest-create/qwest-create.component';
 import { QwestListComponent } from './qwest-list/qwest-list.component';
+import { QwestUpdateComponent } from './qwest-update/qwest-update.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { QwestListComponent } from './qwest-list/qwest-list.component';
     NavigationComponent,
     QwestListComponent,
     QwestCreateComponent,
-    DashboardComponent
+    DashboardComponent,
+    QwestUpdateComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
