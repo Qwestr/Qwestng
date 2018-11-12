@@ -21,4 +21,9 @@ export class QwestListComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new QwestListDataSource(this.appService, this.paginator, this.sort);
   }
+
+  deleteQwest(id) {
+    // Delete the qwest
+    this.appService.deleteQwest(id);
+  }
 }
