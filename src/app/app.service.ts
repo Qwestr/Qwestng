@@ -21,7 +21,7 @@ export class AppService {
   }
 
   getQwests() {
-    // return this.qwests.valueChanges();
+    // Return a subscription to the qwests
     return this.qwests.snapshotChanges().pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Qwest;
@@ -29,6 +29,11 @@ export class AppService {
         return { id, ...data };
       }))
     );
+  }
+
+  getQwest(id) {
+    // Return a subscription to the qwest
+    return this.db.doc<Qwest>(`${config.collection_endpoint}/${id}`).valueChanges();
   }
 
   addQwest(qwest) {
