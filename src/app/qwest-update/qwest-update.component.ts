@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from '../app.service';
 import { Qwest } from '../app.model';
 
@@ -16,7 +16,12 @@ export class QwestUpdateComponent implements OnInit {
     name: [null, Validators.required]
   });
 
-  constructor(private appService: AppService, private fb: FormBuilder, private route: ActivatedRoute) {}
+  constructor(
+    private appService: AppService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     // Subscribe to route parameters
@@ -29,17 +34,21 @@ export class QwestUpdateComponent implements OnInit {
           // Set qwest
           this.qwest = qwest;
           // Set form data
-          this.setFormData();
+          this.form.patchValue(this.qwest);
         }
       );
     });
   }
 
-  setFormData() {
-    
+  onSubmit() {
+    // Update qwest
+    this.appService.updateQwest(this.id, this.form.value);
+    // Navigate to the qwest list
+    this.router.navigateByUrl('/qwest-list');
   }
 
-  onSubmit() {
-    alert('Thanks!');
+  onCancel() {
+    // Navigate to the qwest list
+    this.router.navigateByUrl('/qwest-list');
   }
 }

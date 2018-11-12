@@ -16,9 +16,9 @@ export class QwestCreateComponent {
   constructor(private appService: AppService, private fb: FormBuilder, private router: Router) {}
 
   onSubmit() {
-    // Create the Qwest
+    // Create the qwest
     this.appService.addQwest(this.form.value);
-    // Navigate to the Qwest List
+    // Navigate to the qwest list
     this.router.navigateByUrl('/qwest-list');
   }
 }
