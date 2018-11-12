@@ -1,47 +1,19 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
+import { Observable, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
-
-// TODO: Replace this with your own data model type
-export interface QwestListItem {
-  name: string;
-  id: number;
-}
-
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: QwestListItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
-];
+import { Qwest } from '../app.model';
+import { AppService } from '../app.service';
 
 /**
  * Data source for the QwestList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class QwestListDataSource extends DataSource<QwestListItem> {
-  data: QwestListItem[] = EXAMPLE_DATA;
+export class QwestListDataSource extends DataSource<Qwest> {
+  data: Qwest[] = [];
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(private appService: AppService, private paginator: MatPaginator, private sort: MatSort) {
     super();
   }
 
@@ -50,19 +22,28 @@ export class QwestListDataSource extends DataSource<QwestListItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<QwestListItem[]> {
+  connect(): Observable<Qwest[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
-      this.paginator.page,
-      this.sort.sortChange
+      this.appService.getQwests().pipe(map((value) => {
+        return { type: 'DATA_CHANGE', data: value }
+      })),
+      this.paginator.page.pipe(map((value) => {
+        return { type: 'PAGE_CHANGE', data: value }
+      })),
+      this.sort.sortChange.pipe(map((value) => {
+        return { type: 'SORT_CHANGE', data: value }
+      }))
     ];
 
-    // Set the paginator's length
-    this.paginator.length = this.data.length;
-
-    return merge(...dataMutations).pipe(map(() => {
+    return merge(...dataMutations).pipe(map((value: {type, data}) => {
+      if (value.type === 'DATA_CHANGE') {
+        // Set data
+        this.data = value.data
+        // Set the paginator's length
+        this.paginator.length = this.data.length;
+      }
       return this.getPagedData(this.getSortedData([...this.data]));
     }));
   }
@@ -77,7 +58,7 @@ export class QwestListDataSource extends DataSource<QwestListItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: QwestListItem[]) {
+  private getPagedData(data: Qwest[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
   }
@@ -86,7 +67,7 @@ export class QwestListDataSource extends DataSource<QwestListItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: QwestListItem[]) {
+  private getSortedData(data: Qwest[]) {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
